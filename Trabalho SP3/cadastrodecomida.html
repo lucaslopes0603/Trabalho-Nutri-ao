@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Comida - Nutrimax</title>
+    <style>
+        /* Estilos CSS */
+
+        /* Estilo global */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Estilo do cabeçalho */
+        header {
+            background: #666666;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+        }
+
+        .back-arrow {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5em;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-img {
+            width: 50px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .logo-text {
+            color: #fff;
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        /* Estilo do contêiner */
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            margin-top: 80px;
+        }
+
+        /* Estilo do formulário */
+        form {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="number"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button[type="submit"],
+        button[type="button"] {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover,
+        button[type="button"]:hover {
+            background-color: #444444;
+        }
+
+        /* Estilo do pop-up */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .popup h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html" class="back-arrow">&#8592;</a>
+            <img src="logo.png" alt="Logo Nutrimax" class="logo-img">
+            <h1 class="logo-text">NUTRIMAX</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Cadastro de Comida</h2>
+        <form id="foodForm">
+            <label for="nome">Nome do Alimento:</label>
+            <input type="text" id="nome" name="nome" required>
+            <label for="carboidratos">Carboidratos (g):</label>
+            <input type="number" id="carboidratos" name="carboidratos" required>
+            <label for="proteina">Proteína (g):</label>
+            <input type="number" id="proteina" name="proteina" required>
+            <label for="gorduras">Gorduras (g):</label>
+            <input type="number" id="gorduras" name="gorduras" required>
+            <label for="calorias">Calorias:</label>
+            <input type="number" id="calorias" name="calorias" required>
+            <label for="imagem">Upload da Foto:</label>
+            <input type="file" id="imagem" name="imagem">
+            <button type="submit">Salvar</button>
+        </form>
+        <button type="button" id="editButton">Editar</button>
+    </div>
+
+    <div class="overlay"></div>
+
+    <div class="popup" id="editPopup">
+        <button class="close-btn" id="closePopup">&times;</button>
+        <h2>Editar Comida</h2>
+        <form id="editFoodForm">
+            <label for="editNome">Nome do Alimento:</label>
+            <input type="text" id="editNome" name="nome">
+            <label for="editCarboidratos">Carboidratos (g):</label>
+            <input type="number" id="editCarboidratos" name="carboidratos">
+            <label for="editProteina">Proteína (g):</label>
+            <input type="number" id="editProteina" name="proteina">
+            <label for="editGorduras">Gorduras (g):</label>
+            <input type="number" id="editGorduras" name="gorduras">
+                            <label for="editCalorias">Calorias:</label>
+                            <input type="number" id="editCalorias" name="calorias">
+                            <label for="editImagem">Upload da Foto:</label>
+                            <input type="file" id="editImagem" name="imagem">
+                            <button type="submit">Salvar</button>
+                        </form>
+                    </div>
+
+                    <script>
+                        // Função para carregar os dados do localStorage e preencher o formulário de comida
+                        function loadFoodData() {
+                            const foodData = JSON.parse(localStorage.getItem('foodData'));
+                            if (foodData) {
+                                document.getElementById('nome').value = foodData.nome;
+                                document.getElementById('carboidratos').value = foodData.carboidratos;
+                                document.getElementById('proteina').value = foodData.proteina;
+                                document.getElementById('gorduras').value = foodData.gorduras;
+                                document.getElementById('calorias').value = foodData.calorias;
+                                // O campo de imagem não é preenchido devido a limitações de segurança do navegador
+                            }
+                        }
+
+                        // Carregar dados ao carregar a página
+                        document.addEventListener('DOMContentLoaded', function() {
+                            loadFoodData();
+                        });
+
+                        // Salvar dados ao submeter o formulário de cadastro de comida
+                        document.getElementById('foodForm').addEventListener('submit', function(event) {
+                            event.preventDefault();
+
+                            const foodData = {
+                                nome: document.getElementById('nome').value,
+                                carboidratos: document.getElementById('carboidratos').value,
+                                proteina: document.getElementById('proteina').value,
+                                gorduras: document.getElementById('gorduras').value,
+                                calorias: document.getElementById('calorias').value,
+                                imagem: document.getElementById('imagem').value // Este valor será o caminho do arquivo no sistema do usuário
+                            };
+
+                            localStorage.setItem('foodData', JSON.stringify(foodData));
+                            alert('Comida cadastrada com sucesso!');
+                        });
+
+                        // Mostrar o pop-up de edição com os dados atuais
+                        document.getElementById('editButton').addEventListener('click', function() {
+                            const foodData = JSON.parse(localStorage.getItem('foodData'));
+                            if (foodData) {
+                                document.getElementById('editNome').value = foodData.nome;
+                                document.getElementById('editCarboidratos').value = foodData.carboidratos;
+                                document.getElementById('editProteina').value = foodData.proteina;
+                                document.getElementById('editGorduras').value = foodData.gorduras;
+                                document.getElementById('editCalorias').value = foodData.calorias;
+                                // O campo de imagem não é preenchido devido a limitações de segurança do navegador
+                            }
+
+                            document.querySelector('.overlay').style.display = 'block';
+                            document.getElementById('editPopup').style.display = 'block';
+                        });
+
+                        // Fechar o pop-up de edição
+                        document.getElementById('closePopup').addEventListener('click', function() {
+                            document.querySelector('.overlay').style.display = 'none';
+                            document.getElementById('editPopup').style.display = 'none';
+                        });
+
+                        document.querySelector('.overlay').addEventListener('click', function() {
+                            document.querySelector('.overlay').style.display = 'none';
+                            document.getElementById('editPopup').style.display = 'none';
+                        });
+
+                        // Salvar dados ao submeter o formulário de edição
+                        document.getElementById('editFoodForm').addEventListener('submit', function(event) {
+                            event.preventDefault();
+
+                            const updatedFoodData = {
+                                nome: document.getElementById('editNome').value,
+                                carboidratos: document.getElementById('editCarboidratos').value,
+                                proteina: document.getElementById('editProteina').value,
+                                gorduras: document.getElementById('editGorduras').value,
+                                calorias: document.getElementById('editCalorias').value,
+                                imagem: document.getElementById('editImagem').value // Este valor será o caminho do arquivo no sistema do usuário
+                            };
+
+                            localStorage.setItem('foodData', JSON.stringify(updatedFoodData));
+                            loadFoodData();
+
+                            document.querySelector('.overlay').style.display = 'none';
+                            document.getElementById('editPopup').style.display = 'none';
+
+                            alert('Dados da comida editados com sucesso!');
+                        });
+                    </script>
+                </body>
+                </html>

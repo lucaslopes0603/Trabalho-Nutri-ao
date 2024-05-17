@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro e Edição - Nutrimax</title>
+    <style>
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo global */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Estilo do cabeçalho */
+        header {
+            background: #666666;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+        }
+
+        .back-arrow {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5em;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-img {
+            width: 50px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .logo-text {
+            color: #fff;
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        /* Estilo do contêiner */
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            margin-top: 80px;
+        }
+
+        /* Estilo do formulário */
+        form {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="number"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button[type="submit"],
+        button[type="button"] {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover,
+        button[type="button"]:hover {
+            background-color: #444444;
+        }
+
+        /* Estilo do pop-up */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .popup h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html" class="back-arrow">&#8592;</a>
+            <img src="logo.png" alt="Logo Nutrimax" class="logo-img">
+            <h1 class="logo-text">NUTRIMAX</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Registrar e Editar Informações</h2>
+        <form id="registerForm">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+            <label for="dataNascimento">Data de Nascimento:</label>
+            <input type="date" id="dataNascimento" name="dataNascimento" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="peso">Peso (kg):</label>
+            <input type="number" id="peso" name="peso" required>
+            <label for="altura">Altura (cm):</label>
+            <input type="number" id="altura" name="altura" required>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+            <label for="meta">Meta:</label>
+            <input type="text" id="meta" name="meta" required>
+            <label for="alergias">Alergias:</label>
+            <input type="text" id="alergias" name="alergias">
+            <button type="submit">Salvar</button>
+        </form>
+        <button type="button" id="editButton">Editar</button>
+    </div>
+
+    <div class="overlay"></div>
+
+    <div class="popup" id="editPopup">
+        <button class="close-btn" id="closePopup">&times;</button>
+        <h2>Editar Dados</h2>
+        <form id="editForm">
+            <label for="editNome">Nome:</label>
+            <input type="text" id="editNome" name="nome">
+            <label for="editDataNascimento">Data de Nascimento:</label>
+            <input type="date" id="editDataNascimento" name="dataNascimento">
+            <label for="editEmail">Email:</label>
+            <input type="email" id="editEmail" name="email">
+            <label for="editPeso">Peso (kg):</label>
+            <input type="number" id="editPeso" name="peso">
+            <label for="editAltura">Altura (cm):</label>
+            <input type="number" id="editAltura" name="altura">
+            <label for="editMeta">Meta:</label>
+            <input type="text" id="editMeta" name="meta">
+            <label for="editAlergias">Alergias:</label>
+            <input type="text" id="editAlergias" name="alergias">
+            <button type="submit">Salvar</button>
+        </form>
+    </div>
+
+    <script>
+        // Função para carregar os dados do localStorage e preencher o formulário
+        function loadUserData() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('nome').value = userData.nome;
+                document.getElementById('dataNascimento').value = userData.dataNascimento;
+                document.getElementById('email').value = userData.email;
+                document.getElementById('peso').value = userData.peso;
+                document.getElementById('altura').value = userData.altura;
+                document.getElementById('senha').value = userData.senha;
+                document.getElementById('meta').value = userData.meta;
+                document.getElementById('alergias').value = userData.alergias;
+            }
+        }
+
+        // Carregar dados ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+        });
+
+        // Salvar dados ao submeter o formulário de registro
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                nome: document.getElementById('nome').value,
+                dataNascimento: document.getElementById('dataNascimento').value,
+                email: document.getElementById('email').value,
+                peso: document.getElementById('peso').value,
+                altura: document.getElementById('altura').value,
+                senha: document.getElementById('senha').value,
+                meta: document.getElementById('meta').value,
+                alergias: document.getElementById('alergias').value,
+            };
+
+            localStorage.setItem('userData', JSON.stringify(formData));
+            alert('Dados salvos com sucesso!');
+        });
+
+        // Mostrar o pop-up de edição com os dados atuais
+        document.getElementById('editButton').addEventListener('click', function() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('editNome').value = userData.nome;
+                document.getElementById('editDataNascimento').value = userData.dataNascimento;
+                document.getElementById('editEmail').value = userData.email;
+                document.getElementById('editPeso').value = userData.peso;
+                document.getElementById('editAltura').value = userData.altura;
+                document.getElementById('editMeta').value = userData.meta;
+                document.getElementById('editAlergias').value = userData.alergias;
+            }
+
+            document.querySelector('.overlay').style.display = 'block';
+            document.getElementById('editPopup').style.display = 'block';
+        });
+
+        // Fechar o pop-up de edição
+        document.getElementById('closePopup').addEventListener('click', function() {
+            document.querySelector('.overlay').style.display = 'none';
+            document.getElementById('editPopup').style.display = 'none';
+        });
+
+        document.querySelector('.overlay').addEventListener('click', function() {
+            document.querySelector('.overlay').style.display = 'none';
+            document.getElementById('editPopup').style.display = 'none';
+        });
+
+        // Salvar dados ao submeter o formulário de edição
+        document.getElementById('editForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const updatedData = {
+                nome: document.getElementById('editNome').value,
+                dataNascimento: document.getElementById('editDataNascimento').value,
+                email: document.getElementById('editEmail').value,
+                peso: document.getElementById('editPeso').value,
+                altura: document.getElementById('editAltura').value,
+                meta: document.getElementById('editMeta').value,
+                alergias: document.getElementById('editAlergias').value,
+            };
+
+            localStorage.setItem('userData', JSON.stringify(updatedData));
+            loadUserData();
+
+            document.querySelector('.overlay').style.display = 'none';
+            document.getElementById('editPopup').style.display = 'none';
+
+            alert('Dados editados com sucesso!');
+        });
+    </script>
+</body>
+</html>

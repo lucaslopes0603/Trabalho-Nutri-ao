@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum</title>
+    <style>
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo global */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Centraliza verticalmente */
+            height: 100vh; /* Garante que ocupe a altura total da viewport */
+        }
+
+        header {
+            background: #666666;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .back-arrow {
+            color: #fff; /* Cor da seta */
+            text-decoration: none; /* Remove sublinhado */
+            font-size: 1.5em; /* Tamanho da seta */
+            margin-right: 10px; /* Espaçamento entre a seta e o logo */
+            display: flex; /* Para alinhar com a logo */
+            align-items: center; /* Centralizar verticalmente */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-img {
+            width: 50px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .logo-text {
+            color: #fff; /* Define a cor do texto como branca */
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        /* Estilo do container */
+        .container {
+            max-width: 800px;
+            width: 100%; /* Garante que o container ocupe toda a largura possível */
+            margin: 20px; /* Margem para evitar encostar nas bordas da viewport */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #00ff80;
+            color: #0e0000;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #00b330;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .question p {
+            margin-bottom: 10px;
+        }
+
+        .reply-btn {
+            margin-top: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        .reply-form {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .reply {
+            margin-left: 20px;
+            border-left: 2px solid #ddd;
+            padding-left: 10px;
+        }
+
+        .category-select {
+            margin-bottom: 10px;
+        }
+
+        /* Estilo do botão de limpar storage */
+        #clearStorageBtn {
+            padding: 5px 10px; /* Reduz o padding do botão */
+            font-size: 0.8em; /* Diminui o tamanho da fonte */
+            background-color: #ff6666; /* Cor de fundo */
+            color: #fff; /* Cor do texto */
+            border: none; /* Remove borda */
+            border-radius: 3px; /* Arredondamento dos cantos */
+            cursor: pointer;
+            margin-top: 10px; /* Espaçamento acima do botão */
+        }
+
+        #clearStorageBtn:hover {
+            background-color: #ff3333; /* Cor de fundo ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html" class="back-arrow">&#8592;</a> <!-- Seta para voltar -->
+            <img src="logo.png" alt="Logo Nutrimax" class="logo-img">
+            <h1 class="logo-text">NUTRIMAX</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Fórum</h1>
+        <div id="questions"></div>
+        <form id="questionForm">
+            <textarea id="questionText" placeholder="Digite sua pergunta"></textarea>
+            <select id="categorySelect" class="category-select">
+                <option value="" disabled selected>Selecione a categoria</option>
+                <option value="Exercícios">Exercícios</option>
+                <option value="Alimentação">Alimentação</option>
+                <option value="Ganho de Massa Muscular">Ganho de Massa Muscular</option>
+                <!-- Adicione mais opções conforme necessário -->
+            </select>
+            <button type="submit">Enviar Pergunta</button>
+        </form>
+        <button id="clearStorageBtn">Limpar Storage</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadQuestions();
+
+            document.getElementById('questionForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const questionText = document.getElementById('questionText').value;
+                const category = document.getElementById('categorySelect').value;
+                if (questionText.trim() !== '' && category !== '') {
+                    postQuestion(questionText, category);
+                } else {
+                    alert('Por favor, preencha todos os campos.');
+                }
+            });
+
+            document.getElementById('questions').addEventListener('click', function(event) {
+                if (event.target.classList.contains('reply-btn')) {
+                    const replyForm = event.target.nextElementSibling;
+                    if (replyForm.style.display === 'none') {
+                        replyForm.style.display = 'block';
+                    } else {
+                        replyForm.style.display = 'none';
+                    }
+                }
+            });
+
+            document.getElementById('clearStorageBtn').addEventListener('click', function() {
+                localStorage.clear();
+                alert('LocalStorage limpo!');
+                loadQuestions(); // Recarregar as perguntas para atualizar a visualização
+            });
+        });
+
+        function loadQuestions() {
+            const questions = JSON.parse(localStorage.getItem('questions')) || [];
+            const questionsContainer = document.getElementById('questions');
+            questionsContainer.innerHTML = '';
+            questions.forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.innerHTML = `
+                    <p><strong>Categoria:</strong> ${question.category}</p>
+                    <p>${question.text}</p>
+                    <button class="reply-btn">Responder</button>
+                    <form class="reply-form">
+                        <textarea placeholder="Digite sua resposta"></textarea>
+                        <button type="button">Enviar Resposta</button>
+                    </form>
+                `;
+                questionsContainer.appendChild(questionDiv);
+
+                if (question.replies && question.replies.length > 0) {
+                    question.replies.forEach(reply => {
+                        const replyDiv = document.createElement('div');
+                        replyDiv.classList.add('reply');
+                        replyDiv.textContent = reply;
+                        questionDiv.appendChild(replyDiv);
+                    });
+                }
+            });
+        }
+
+        function postQuestion(text, category) {
+            const questions = JSON.parse(localStorage.getItem('questions')) || [];
+            const newQuestion = { id: questions.length + 1, text: text, category: category, replies: [] };
+            questions.push(newQuestion);
+            localStorage.setItem('questions', JSON.stringify(questions));
+            document.getElementById('questionText').value = '';
+            document.getElementById('categorySelect').selectedIndex = 0;
+            loadQuestions();
+        }
+    </script>
+</body>
+</html>

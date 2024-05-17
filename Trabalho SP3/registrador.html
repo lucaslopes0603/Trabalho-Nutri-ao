@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Alimento - Nutrimax</title>
+    <style>
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo global */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilo do cabeçalho */
+        header {
+            background: #666666;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        .back-arrow {
+            color: #fff; /* Cor da seta */
+            text-decoration: none; /* Remove sublinhado */
+            font-size: 1.5em; /* Tamanho da seta */
+            margin-right: 10px; /* Espaçamento entre a seta e o logo */
+            display: flex; /* Para alinhar com a logo */
+            align-items: center; /* Centralizar verticalmente */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-img {
+            width: 50px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .logo-text {
+            color: #fff; /* Define a cor do texto como branca */
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        /* Estilo do formulário */
+        form {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #305e32;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2a2a2a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html" class="back-arrow">&#8592;</a> <!-- Seta para voltar -->
+            <img src="logo.png" alt="Logo Nutrimax" class="logo-img">
+            <h1 class="logo-text">NUTRIMAX</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Registrar Alimento</h2>
+        <form id="registroForm">
+            <label for="nome">Nome do Alimento:</label>
+            <input type="text" id="nome" required>
+            <label for="foto">Foto do Alimento:</label>
+            <input type="file" id="foto" accept="image/*">
+            <label for="caracteristicas">Características:</label>
+            <textarea id="caracteristicas" rows="5" placeholder="Digite as características do alimento"></textarea>
+            <button type="submit">Registrar</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const foto = document.getElementById('foto').files[0];
+            const caracteristicas = document.getElementById('caracteristicas').value;
+            registrarAlimento(nome, foto, caracteristicas);
+        });
+
+        function registrarAlimento(nome, foto, caracteristicas) {
+           // nao sei se precisa colocar localHost
+            console.log('Nome do Alimento:', nome);
+            console.log('Foto do Alimento:', foto);
+            console.log('Características:', caracteristicas);
+            alert('Alimento registrado com sucesso!');
+            document.getElementById('registroForm').reset();
+        }
+    </script>
+</body>
+</html>
